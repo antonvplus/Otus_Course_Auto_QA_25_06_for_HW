@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, TypeAdapter, Field
+from pydantic import BaseModel, EmailStr, TypeAdapter, Field, ConfigDict
 from typing import List, Annotated
 import random
 from faker import Faker
@@ -35,6 +35,8 @@ class AlbumModel(BaseModel):
     userId: int | None = None
     id: int
     title: str
+
+    model_config = ConfigDict(extra="forbid")
 
 class AlbumUpdateModel(BaseModel):
     userId: int = Field(default_factory=lambda: random.randint(1, 100))

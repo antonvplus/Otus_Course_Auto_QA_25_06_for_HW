@@ -6,6 +6,9 @@ def pytest_addoption(parser):
     parser.addoption('--status_code', action='store', default=200, help='Expected status code')
 
 @pytest.fixture(scope='function')
-def check_resource(request):
-    client = HttpClient(request.config.getoption('--url'))
-    client.check_request(code=request.config.getoption('--status_code'))
+def check_resource(request) -> tuple[HttpClient, str]:
+    return HttpClient(request.config.getoption('--url')), request.config.getoption('--status_code')
+
+@pytest.fixture(scope='class')
+def create_client_for_class(request) -> HttpClient:
+    return HttpClient(request.param)
